@@ -22,7 +22,7 @@ module "eks" {
     }
 
     nodes-group = {
-      min_size       = 1
+      min_size       = 2
       max_size       = 2
       desired_size   = 2
       instance_types = ["t2.micro"]
@@ -35,15 +35,12 @@ module "eks" {
   cluster_addons = {
     coredns = {
       most_recent                 = true
-      resolve_conflicts_on_create = "OVERWRITE"
     }
     kube-proxy = {
       most_recent                 = true
-      resolve_conflicts_on_create = "OVERWRITE"
     }
     vpc-cni = {
       most_recent                 = true
-      resolve_conflicts_on_create = "OVERWRITE"
     }
   }
 
