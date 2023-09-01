@@ -12,12 +12,32 @@ module "eks" {
   cluster_endpoint_public_access = true
 
   manage_aws_auth_configmap = true
+  aws_auth_users = [
+    {
+      userarn  = "arn:aws:iam::361656941569:user/dti-cli",
+      username = "dti-cli",
+      groups = [
+        "system:master"
+      ]
+    }
+  ]
+  aws_auth_roles = [
+    {
+      rolearn = "arn:aws:iam::361656941569:role/DTi.Admin",
+      groups = [
+        "system:master"
+      ]
+    }
+  ]
 
   cluster_addons = {
     coredns = {
       most_recent = true
     }
     kube-proxy = {
+      most_recent = true
+    }
+    vpc-cni = {
       most_recent = true
     }
   }
@@ -35,6 +55,7 @@ module "eks_managed_node_group" {
   name            = "${var.project}-eks-node-group"
   cluster_name    = "${var.project}-eks"
   cluster_version = "1.21"
+  ami_id          = "ami-0a78e022c1edff515"
 
   subnet_ids = module.vpc.private_subnets
 
