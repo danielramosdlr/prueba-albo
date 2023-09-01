@@ -26,15 +26,6 @@ module "eks" {
   }
 
   manage_aws_auth_configmap = true
-  aws_auth_users = [
-    {
-      userarn  = "arn:aws:iam::361656941569:user/dti-cli",
-      username = "dti-cli",
-      groups = [
-        "system:master"
-      ]
-    }
-  ]
 
   cluster_addons = {
     coredns = {
