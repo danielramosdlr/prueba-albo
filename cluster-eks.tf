@@ -4,13 +4,15 @@ module "eks" {
   depends_on = [module.vpc]
 
   cluster_name    = "${var.project}-eks"
-  cluster_version = "1.27"
+  cluster_version = "1.23"
 
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.private_subnets
 
   cluster_endpoint_public_access = true
 
+  manage_aws_auth_configmap = true
+  
   aws_auth_users = [
     {
       userarn  = "arn:aws:iam::361656941569:user/dti-cli",
