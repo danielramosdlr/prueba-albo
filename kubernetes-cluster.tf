@@ -85,7 +85,7 @@ resource "aws_eks_node_group" "node-group" {
   cluster_name    = aws_eks_cluster.cluster-eks.name
   node_group_name = "${var.project}-node-group"
   node_role_arn   = aws_iam_role.node-rol.arn
-  subnet_ids      = [var.subnet_id_1, var.subnet_id_2]
+  subnet_ids      = module.vpc.private_subnets
   instance_types  = ["t3.micro"]
 
   scaling_config {
