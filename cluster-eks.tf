@@ -11,24 +11,6 @@ module "eks" {
 
   cluster_endpoint_public_access = true
 
-  eks_managed_node_groups = {
-    master-node = {
-      name           = "master-node"
-      min_size       = 1
-      max_size       = 1
-      desire_size    = 1
-      instance_types = ["t2.micro"]
-    }
-
-#    group-nodes = {
-#      name           = "group-nodes"
-#      min_size       = 2
-#      max_size       = 2
-#      desired_size   = 2
-#      instance_types = ["t2.micro"]
-#    }
-  }
-
   manage_aws_auth_configmap = true
 
   cluster_addons = {
@@ -40,6 +22,26 @@ module "eks" {
     }
   }
 
+  cluster_enabled_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
+
+  tags = {
+    project = var.project
+  }
+}
+
+module "eks_managed_node_group" {
+  source = "terraform-aws-modules/eks/aws//modules/eks-managed-node-group"
+
+  name            = "${var.project}-eks-node-group"
+  cluster_name    = "${var.project}-eks"
+  cluster_version = "1.21"
+
+  vpc_id     = module.vpc.vpc_id
+  subnet_ids = module.vpc.private_subnets
+
+  cluster_primary_security_group_id = module.eks.cluster_primary_security_group_id
+  vpc_security_group_ids            = [module.eks.node_security_group_id]
+
   create_iam_role          = true
   iam_role_name            = "${var.project}-eks-rol"
   iam_role_use_name_prefix = false
@@ -47,7 +49,16 @@ module "eks" {
     CloudWatchAgentServerPolicy = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
   }
 
-  cluster_enabled_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
+  min_size     = 1
+  max_size     = 1
+  desired_size = 1
+
+  instance_types = ["t3.micro"]
+  capacity_type  = "ON_DEMAND"
+
+  labels = {
+    Environment = "test"
+  }
 
   tags = {
     project = var.project
