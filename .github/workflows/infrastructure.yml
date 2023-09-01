@@ -45,7 +45,7 @@ jobs:
 #                        --out-file=/tmp/infracost.json
 
   terraform:
-    needs: [scan, infracost]
+#    needs: [scan, infracost]
     name: Terraform
     runs-on: ubuntu-latest
     defaults:
