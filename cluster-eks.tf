@@ -4,7 +4,7 @@ module "eks" {
   depends_on = [module.vpc]
 
   cluster_name    = "${var.project}-eks"
-  cluster_version = "1.21"
+  cluster_version = "1.27"
 
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.private_subnets
@@ -25,7 +25,7 @@ module "eks" {
     }
   }
 
-  #  manage_aws_auth_configmap = true
+  manage_aws_auth_configmap = true
 
   cluster_addons = {
     coredns = {
