@@ -12,7 +12,7 @@ module "eks" {
   cluster_endpoint_public_access = true
 
   manage_aws_auth_configmap = true
-  
+
   aws_auth_users = [
     {
       userarn  = "arn:aws:iam::361656941569:user/dti-cli",
