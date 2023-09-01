@@ -1,0 +1,67 @@
+name: 'Prueba Albo'
+
+on:
+  push:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  scan:
+    name: Scan
+    runs-on: ubuntu-latest
+    steps:
+    - name: SonarCloud Scan
+      uses: SonarSource/sonarcloud-github-action@master
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  infracost:
+    name: Infracost
+    runs-on: ubuntu-latest
+    env:
+      TF_ROOT: ./
+    steps:
+    - name: Checkout branch
+      uses: actions/checkout@v3
+    - name: Setup Infracost
+      uses: infracost/actions/setup@v2
+      with:
+        api-key: ${{ secrets.INFRACOST_API_KEY }}
+    - name: Generate Infracost cost estimate baseline
+      run: |
+        infracost breakdown --path=${TF_ROOT} \
+                            --format=json \
+                            --out-file=/tmp/infracost-base.json
+    - name: Generate Infracost diff
+      run: |
+        infracost diff --path=${TF_ROOT} \
+                        --format=json \
+                        --compare-to=/tmp/infracost-base.json \
+                        --out-file=/tmp/infracost.json
+
+  terraform:
+    name: Terraform
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+    - name: Checkout branch
+      uses: actions/checkout@v3
+    - name: Configure AWS Credentials Action For GitHub Actions
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+    - name: Terraform Init
+      run: terraform init
+    - name: Terraform Format
+      run: terraform fmt -check
+    - name: Terraform Plan
+      run: terraform plan
+
+#    - name: Terraform Apply
+#      run: terraform apply -auto-approve
