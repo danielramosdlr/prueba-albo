@@ -26,11 +26,11 @@ module "eks" {
 
   eks_managed_node_groups = {
     nodes-group = {
-      min_size        = 1
-      max_size        = 4
-      desired_size    = 1
-      instance_types  = ["t3.small"]
-      capacity_type   = "ON_DEMAND"
+      min_size       = 1
+      max_size       = 4
+      desired_size   = 1
+      instance_types = ["t3.small"]
+      capacity_type  = "ON_DEMAND"
     }
   }
 
