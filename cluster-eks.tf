@@ -47,12 +47,16 @@ module "eks" {
     project = var.project
   }
 
-  eks_managed_node_group_defaults = {
-
-  }
-
   eks_managed_node_groups = {
-    master = {
+    nodes-group = {
+      min_capacity     = 1
+      max_capacity     = 3
+      desired_capacity = 1
+      instance_types   = ["t3.small"]
+      capacity_type    = "ON_DEMAND"
+      update_config = {
+        max_unavailable_percentage = 50
+      }
       create_iam_role          = true
       iam_role_name            = "${var.project}-eks-master-rol"
       iam_role_use_name_prefix = false
@@ -60,40 +64,6 @@ module "eks" {
         CloudWatchAgentServerPolicy = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
         AmazonEKS_CNI_Policy        = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
       }
-
-      min_size     = 1
-      max_size     = 1
-      desired_size = 1
-
-      instance_types = ["t3.micro"]
-      capacity_type  = "ON_DEMAND"
-
-      labels = {
-        Environment = "test"
-      }
-
-    }
-
-    nodes = {
-      create_iam_role          = true
-      iam_role_name            = "${var.project}-eks-nodes-rol"
-      iam_role_use_name_prefix = false
-      iam_role_additional_policies = {
-        CloudWatchAgentServerPolicy = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
-        AmazonEKS_CNI_Policy        = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
-      }
-
-      min_size     = 2
-      max_size     = 2
-      desired_size = 2
-
-      instance_types = ["t3.micro"]
-      capacity_type  = "ON_DEMAND"
-
-      labels = {
-        Environment = "test"
-      }
-
     }
   }
 }
