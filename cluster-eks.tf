@@ -22,6 +22,16 @@ module "eks" {
     }
   }
 
+  aws_auth_users = [
+    {
+      userarn  = "arn:aws:iam::361656941569:user/dti-cli",
+      username = "dti-cli",
+      groups = [
+        "system:master"
+      ]
+    }
+  ]
+
   cluster_addons = {
     coredns = {
       most_recent                 = true
@@ -43,8 +53,3 @@ module "eks" {
     project = var.project
   }
 }
-
-#resource "aws_iam_role_policy_attachment" "attach-cloudwatchagent-policy" {
-#  role       = var.iam_node_rol
-#  policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
-#}
