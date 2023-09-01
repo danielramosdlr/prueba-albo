@@ -1,3 +1,15 @@
+provider "kubernetes" {
+  host                   = module.eks.cluster_endpoint
+  cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
+
+  exec {
+    api_version = "client.authentication.k8s.io/v1beta1"
+    command     = "aws"
+    # This requires the awscli to be installed locally where Terraform is executed
+    args = ["eks", "get-token", "--cluster-name", module.eks.cluster_name]
+  }
+}
+
 module "eks" {
   source     = "terraform-aws-modules/eks/aws"
   version    = "~> 19.0"
@@ -14,14 +26,15 @@ module "eks" {
 
   eks_managed_node_groups = {
     nodes-group = {
-      min_capacity     = 1
-      max_capacity     = 3
-      desired_capacity = 3
-      instance_types   = ["t2.micro"]
-      capacity_type    = "ON_DEMAND"
+      min_size        = 3
+      max_size        = 4
+      desired_size    = 3
+      instance_types  = ["t3.micro"]
+      capacity_type   = "ON_DEMAND"
     }
   }
 
+  manage_aws_auth_configmap = true
   aws_auth_users = [
     {
       userarn  = "arn:aws:iam::361656941569:user/dti-cli",
