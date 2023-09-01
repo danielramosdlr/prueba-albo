@@ -36,7 +36,6 @@ module "eks_managed_node_group" {
   cluster_name    = "${var.project}-eks"
   cluster_version = "1.21"
 
-  vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.private_subnets
 
   cluster_primary_security_group_id = module.eks.cluster_primary_security_group_id
