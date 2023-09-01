@@ -20,13 +20,13 @@ module "eks" {
       instance_types = ["t2.micro"]
     }
 
-    group-nodes = {
-      name           = "group-nodes"
-      min_size       = 2
-      max_size       = 2
-      desired_size   = 2
-      instance_types = ["t2.micro"]
-    }
+#    group-nodes = {
+#      name           = "group-nodes"
+#      min_size       = 2
+#      max_size       = 2
+#      desired_size   = 2
+#      instance_types = ["t2.micro"]
+#    }
   }
 
   manage_aws_auth_configmap = true
@@ -36,9 +36,6 @@ module "eks" {
       most_recent = true
     }
     kube-proxy = {
-      most_recent = true
-    }
-    vpc-cni = {
       most_recent = true
     }
   }
