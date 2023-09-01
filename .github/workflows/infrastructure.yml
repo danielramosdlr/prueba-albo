@@ -12,12 +12,16 @@ jobs:
     name: Scan
     runs-on: ubuntu-latest
     steps:
+    - name: Checkout branch
+      uses: actions/checkout@v3
     - name: SonarCloud Scan
       uses: SonarSource/sonarcloud-github-action@master
       env:
+#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   infracost:
+    needs: [scan]
     name: Infracost
     runs-on: ubuntu-latest
     env:
@@ -42,6 +46,7 @@ jobs:
                         --out-file=/tmp/infracost.json
 
   terraform:
+    needs: [scan, infracost]
     name: Terraform
     runs-on: ubuntu-latest
     defaults:

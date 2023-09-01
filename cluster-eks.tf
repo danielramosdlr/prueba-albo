@@ -1,7 +1,7 @@
 module "eks" {
-  source  = "terraform-aws-modules/eks/aws"
-  version = "~> 19.0"
-  depends_on              = [module.vpc]
+  source     = "terraform-aws-modules/eks/aws"
+  version    = "~> 19.0"
+  depends_on = [module.vpc]
 
   cluster_name    = "${var.project}-eks"
   cluster_version = "1.21"
@@ -24,30 +24,30 @@ module "eks" {
 
   aws_auth_users = [
     {
-        userarn = "arn:aws:iam::361656941569:user/dti-cli",
-        username = "dti-cli",
-        groups = [
-            "system:master"
-        ]
+      userarn  = "arn:aws:iam::361656941569:user/dti-cli",
+      username = "dti-cli",
+      groups = [
+        "system:master"
+      ]
     }
   ]
 
   cluster_addons = {
     coredns = {
-      most_recent = true
+      most_recent                 = true
       resolve_conflicts_on_create = "OVERWRITE"
     }
     kube-proxy = {
-      most_recent = true
+      most_recent                 = true
       resolve_conflicts_on_create = "OVERWRITE"
     }
     vpc-cni = {
-      most_recent = true
+      most_recent                 = true
       resolve_conflicts_on_create = "OVERWRITE"
     }
   }
 
-  cluster_enabled_log_types = ["api","audit","authenticator","controllerManager","scheduler"]
+  cluster_enabled_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
 
   tags = {
     project = var.project
