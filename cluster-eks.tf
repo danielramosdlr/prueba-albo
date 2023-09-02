@@ -62,11 +62,13 @@ module "eks" {
         AmazonEKS_CNI_Policy        = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
       }
     }
+
+    ## Al realizar la demostración se descomentara el bloque de nodos
     #    nodes = {
     #      min_capacity             = 2
     #      max_capacity             = 2
     #      desired_capacity         = 2
-    #      instance_types           = ["t3.micro"]
+    #      instance_types           = ["t3.small"]
     #      capacity_type            = "ON_DEMAND"
     #      create_iam_role          = true
     #      iam_role_name            = "${var.project}-eks-nodes-rol"
