@@ -34,7 +34,8 @@ Para la creación del cluster de kubernetes nos apoyamos con el modulo de terraf
 ## Flujo de automatización y despliegue
 Nos apoyamos de las herramientas y acciones de Github Action para orquestar la automatización y despliegue de la infraestructura como código, agregando las actividades de Escaneo de vulnerabilidades con ayuda de SonarCloud y una vista de los costos aproximados que tendra nuestra infraestructura mensualmente antes de realizar el despliegue de la misma. Archivo [infrastructure.yml](https://github.com/danielramosdlr/prueba-albo/blob/main/.github/workflows/infrastructure.yml).
 
-## Apoyo y vreferencias
+## Apoyo y referencias
 - **Modulo Terraform VPC de Amazon** - Versión 5.1.1 - https://registry.terraform.io/modules/terraform-aws-modules/vpc/aws/latest
 - **Modulo Terrafomr EKS de Amazon** - versión 19.16.0 - https://registry.terraform.io/modules/terraform-aws-modules/eks/aws/latest
-- 
+- **Infracost** - https://www.infracost.io/docs/
+- **SonarCloud** - https://docs.sonarcloud.io/
