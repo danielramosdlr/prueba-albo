@@ -69,7 +69,7 @@ module "eks" {
       instance_types           = ["t3.micro"]
       capacity_type            = "ON_DEMAND"
       create_iam_role          = true
-      iam_role_name            = "${var.project}-eks-master-rol"
+      iam_role_name            = "${var.project}-eks-nodes-rol"
       iam_role_use_name_prefix = false
       iam_role_additional_policies = {
         CloudWatchAgentServerPolicy = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
