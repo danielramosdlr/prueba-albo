@@ -50,8 +50,8 @@ module "eks" {
   eks_managed_node_groups = {
     master = {
       min_capacity             = 1
-      max_capacity             = 1
-      desired_capacity         = 1
+      max_capacity             = 2
+      desired_capacity         = 2
       instance_types           = ["t3.micro"]
       capacity_type            = "ON_DEMAND"
       create_iam_role          = true
