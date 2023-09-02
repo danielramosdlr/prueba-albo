@@ -11,8 +11,6 @@ module "eks" {
 
   cluster_endpoint_public_access = true
 
-  manage_aws_auth_configmap = true
-
   aws_auth_users = [
     {
       userarn  = "arn:aws:iam::361656941569:user/dti-cli",
@@ -50,15 +48,26 @@ module "eks" {
   }
 
   eks_managed_node_groups = {
-    nodes-group = {
+    master = {
       min_capacity     = 1
-      max_capacity     = 3
+      max_capacity     = 1
       desired_capacity = 1
-      instance_types   = ["t3.small"]
+      instance_types   = ["t3.micro"]
       capacity_type    = "ON_DEMAND"
-      update_config = {
-        max_unavailable_percentage = 50
+      create_iam_role          = true
+      iam_role_name            = "${var.project}-eks-master-rol"
+      iam_role_use_name_prefix = false
+      iam_role_additional_policies = {
+        CloudWatchAgentServerPolicy = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
+        AmazonEKS_CNI_Policy        = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
       }
+    }
+    nodes = {
+      min_capacity     = 2
+      max_capacity     = 2
+      desired_capacity = 2
+      instance_types   = ["t3.micro"]
+      capacity_type    = "ON_DEMAND"
       create_iam_role          = true
       iam_role_name            = "${var.project}-eks-master-rol"
       iam_role_use_name_prefix = false
