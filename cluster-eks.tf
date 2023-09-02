@@ -49,11 +49,11 @@ module "eks" {
 
   eks_managed_node_groups = {
     master = {
-      min_capacity     = 1
-      max_capacity     = 1
-      desired_capacity = 1
-      instance_types   = ["t3.micro"]
-      capacity_type    = "ON_DEMAND"
+      min_capacity             = 1
+      max_capacity             = 1
+      desired_capacity         = 1
+      instance_types           = ["t3.micro"]
+      capacity_type            = "ON_DEMAND"
       create_iam_role          = true
       iam_role_name            = "${var.project}-eks-master-rol"
       iam_role_use_name_prefix = false
@@ -63,11 +63,11 @@ module "eks" {
       }
     }
     nodes = {
-      min_capacity     = 2
-      max_capacity     = 2
-      desired_capacity = 2
-      instance_types   = ["t3.micro"]
-      capacity_type    = "ON_DEMAND"
+      min_capacity             = 2
+      max_capacity             = 2
+      desired_capacity         = 2
+      instance_types           = ["t3.micro"]
+      capacity_type            = "ON_DEMAND"
       create_iam_role          = true
       iam_role_name            = "${var.project}-eks-master-rol"
       iam_role_use_name_prefix = false
